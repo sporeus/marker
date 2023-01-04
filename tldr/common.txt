@@ -781,10 +781,10 @@ pv -d {{PID}}##Attach to an already running process and see its file reading pro
 pv {{file}}##Print the contents of the file and display a progress bar
 pwd -P##Print the current directory, and resolve all symlinks (i.e. show the "physical" path)
 pwd##Print the current directory
-python -c {{command}}##Execute Python language single command
-python -m {{module}} {{arguments}}##Run library module as a script (terminates option list)
-python {{script.py}}##Execute script in a given Python file
-python##Call a Python interactive shell (REPL)
+python3 -c {{command}}##Execute Python language single command
+python3 -m {{module}} {{arguments}}##Run library module as a script (terminates option list)
+python3 {{script.py}}##Execute script in a given Python file
+python3##Call a Python interactive shell (REPL)
 read -a {{array}}##Store each of the next lines you enter as values of an array
 read -d {{new_delimiter}} {{variable}}##Use a specific character as a delimiter instead of a new line
 read -e {{variable}}##Enable backspace and GNU readline hotkeys when entering input with read
