@@ -1,6 +1,7 @@
 # App logic
 from __future__ import print_function
 import os
+from . import config
 from . import keys
 from . import readchar
 from . import command
@@ -23,12 +24,26 @@ def get_os():
         # throw is better
         return 'unknown'
 
+
 def get_user_marks_path():
-    return os.path.join(os.getenv('MARKER_DATA_HOME'), 'user_commands.txt')
+    return os.path.join(config.MARKER_DATA_HOME, config.USER_COMMAND_TXT_FILE)
+
+
 def get_tldr_os_marks_path():
-    return os.path.join(os.getenv('MARKER_HOME'), 'tldr', get_os()+'.txt')
+    return os.path.join(config.MARKER_TLDR_DIR, get_os() + '.txt')
+
+
 def get_tldr_common_marks_path():
-    return os.path.join(os.getenv('MARKER_HOME'), 'tldr', 'common.txt')
+    return os.path.join(config.MARKER_TLDR_DIR, config.COMMON_TXT_FILE)
+
+
+def get_other_marks_path():
+    lst = []
+    for current_path, folders, files in os.walk(config.MARKER_DATA_HOME):
+        for file in files:
+            if (file != 'user_commands.txt') and (file.lower().endswith('.txt')):
+                 lst.append(os.path.join(current_path, file))
+    return lst
 
 
 def mark_command(cmd_string, alias):
@@ -59,6 +74,11 @@ def get_selected_command_or_input(search):
         this function returns the selected command if there is matches or the written characters in the prompt line if no matches are present
     '''
     commands = command.load(get_user_marks_path()) + command.load(get_tldr_os_marks_path()) + command.load(get_tldr_common_marks_path())
+    # Load other marks
+    if config.USE_OTHER_MARK_FILES:
+        list_paths = get_other_marks_path()
+        for path_ in list_paths:
+            commands += command.load(path_)
     state = State(commands, search)
     # draw the screen (prompt + matchd marks)
     renderer.refresh(state)
