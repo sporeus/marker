@@ -58,7 +58,7 @@ def verify_requirements():
         sys.exit(1)
     if get_shell() == "bash":
         version_text = subprocess.Popen("bash --version | head -1", shell=True, stdout=subprocess.PIPE).stdout.read()
-        m = re.search('(\d).(\d)', version_text)
+        m = re.search('(\d).(\d)', version_text.decode('utf-8'))
         if m:
             major_version = int(m.group(1))
             minor_version = int(m.group(2))
@@ -85,7 +85,7 @@ def main():
     install_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 
     mkdir(config_dir_abosulte_path)
-    
+
     write_to_file(
         os.path.join(config_dir_abosulte_path, 'marker.sh'),
         generate_marker_sh(config_dir_abosulte_path, install_dir))
